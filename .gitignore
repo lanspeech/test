@@ -12,3 +12,5 @@ coverage
 .vscode
 .idea
 husky.local.sh
+
+/generated/prisma

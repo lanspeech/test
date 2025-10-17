@@ -8,6 +8,7 @@ Prompt Studio is a friendly, artistic playground for designing expressive AI pro
 - **Tailwind CSS** themed with custom design tokens to reflect a creative brand identity
 - **Testing stack** powered by Vitest and Testing Library
 - **Automated formatting and linting** with Prettier, ESLint, lint-staged, and Husky hooks
+- **Prisma ORM** connected to Postgres with seeds, migrations, and a reusable data-access layer
 - **Docker Compose** setup for Postgres-backed local development
 - **GitHub Actions** CI workflow that runs linting and unit tests on every push and pull request
 
@@ -33,10 +34,23 @@ Prompt Studio is a friendly, artistic playground for designing expressive AI pro
    cp .env.example .env.local
    ```
 
-3. (Optional) Start the Postgres service:
+3. Start the Postgres service:
 
    ```bash
    docker compose up -d postgres
+   ```
+
+4. Generate Prisma Client and run database migrations:
+
+   ```bash
+   npm run prisma:generate
+   npm run prisma:migrate
+   ```
+
+5. Seed the database with initial data:
+
+   ```bash
+   npm run db:seed
    ```
 
 ### Development
@@ -58,9 +72,29 @@ The app will be available at [http://localhost:3000](http://localhost:3000).
 
 Husky hooks automatically run lint-staged on every commit and lint/tests before pushing.
 
+### Database Commands
+
+- **Open Prisma Studio:** `npx prisma studio`
+- **Regenerate Prisma Client:** `npm run prisma:generate`
+- **Create/Apply migrations:** `npm run prisma:migrate`
+- **Reset database:** `npm run db:reset`
+- **Seed database:** `npm run db:seed`
+
 ### Docker Notes
 
 The provided `docker-compose.yml` file configures a Postgres 15 instance with sensible defaults. Credentials and database configuration can be controlled through environment variables in `.env.local` or in your shell. Data is persisted in the `postgres-data` volume.
+
+### Database Schema
+
+The project includes a comprehensive database schema managed by Prisma:
+
+- **Users**: Role-based access control (ADMIN/USER)
+- **Prompts**: AI prompt templates with metadata and configuration
+- **Tags**: Categorization system with many-to-many relationships
+- **Subscriptions**: User subscription management integrated with Stripe
+- **View Logs**: Analytics for tracking prompt usage
+
+See `prisma/README.md` for detailed database documentation and workflows.
 
 ### Continuous Integration
 
