@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --brand-ring: rgba(99, 102, 241, 0.35);
+}
+
+body {
+  @apply bg-brand-canvas font-sans text-brand-ink antialiased;
+}
+
+a {
+  @apply text-brand-primary transition-all duration-200 hover:text-brand-secondary;
+}
+
+::selection {
+  background: rgba(244, 114, 182, 0.35);
+}

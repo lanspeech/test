@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+*.log
+.DS_Store
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+coverage
+.vscode
+.idea
+husky.local.sh
