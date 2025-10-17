@@ -11,7 +11,11 @@
     "test:watch": "vitest",
     "type-check": "tsc --noEmit --pretty",
     "format": "prettier --write .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed",
+    "db:reset": "prisma migrate reset"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -22,6 +26,7 @@
     ]
   },
   "dependencies": {
+    "@prisma/client": "^6.17.1",
     "next": "14.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
@@ -43,8 +48,13 @@
     "postcss": "8.4.35",
     "prettier": "3.1.1",
     "prettier-plugin-tailwindcss": "0.5.11",
+    "prisma": "^6.17.1",
     "tailwindcss": "3.3.6",
+    "ts-node": "^10.9.2",
     "typescript": "5.3.3",
     "vitest": "1.2.2"
+  },
+  "prisma": {
+    "seed": "ts-node --esm prisma/seed.ts"
   }
 }
