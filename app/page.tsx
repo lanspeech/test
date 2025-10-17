@@ -1,3 +1,7 @@
+import Link from 'next/link';
+
+import { getCurrentUser } from '@/lib/auth/session';
+
 const highlights = [
   {
     title: 'Expressive tooling',
@@ -19,7 +23,17 @@ const highlights = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const user = await getCurrentUser();
+
+  const primaryCta = user
+    ? { href: '/prompts', label: 'Browse prompts' }
+    : { href: '/signup', label: 'Start exploring' };
+
+  const secondaryCta = user
+    ? { href: '/account', label: 'Account settings' }
+    : { href: '/login', label: 'Log in' };
+
   return (
     <section className="mx-auto max-w-5xl text-center">
       <span className="inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-1 font-mono text-sm uppercase tracking-[0.2em] shadow-dreamy">
@@ -34,18 +48,18 @@ export default function HomePage() {
         prototype, and launch in a single flow.
       </p>
       <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-        <a
+        <Link
           className="inline-flex items-center justify-center gap-2 rounded-full bg-brand-primary px-6 py-3 font-semibold text-white shadow-dreamy transition hover:-translate-y-0.5 hover:bg-brand-secondary"
-          href="#get-started"
+          href={primaryCta.href}
         >
-          Start exploring
-        </a>
-        <a
+          {primaryCta.label}
+        </Link>
+        <Link
           className="inline-flex items-center justify-center gap-2 rounded-full border border-brand-ink/10 bg-white/80 px-6 py-3 font-semibold text-brand-ink shadow-sm transition hover:-translate-y-0.5 hover:border-brand-primary/40 hover:text-brand-primary"
-          href="#learn-more"
+          href={secondaryCta.href}
         >
-          See how it works
-        </a>
+          {secondaryCta.label}
+        </Link>
       </div>
 
       <div className="mt-16 grid grid-cols-1 gap-6 text-left sm:grid-cols-3">

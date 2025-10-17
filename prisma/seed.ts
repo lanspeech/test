@@ -4,19 +4,30 @@ import {
   SubscriptionStatus,
   UserRole,
 } from '@prisma/client';
+import { hash } from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log('Starting database seed...');
 
+  const [adminPasswordHash, demoPasswordHash] = await Promise.all([
+    hash('AdminPass123!', 12),
+    hash('DemoPass123!', 12),
+  ]);
+
   const adminUser = await prisma.user.upsert({
     where: { email: 'admin@promptstudio.dev' },
-    update: {},
+    update: {
+      passwordHash: adminPasswordHash,
+      emailVerified: new Date(),
+    },
     create: {
       email: 'admin@promptstudio.dev',
       name: 'Admin User',
       role: UserRole.ADMIN,
+      passwordHash: adminPasswordHash,
+      emailVerified: new Date(),
     },
   });
 
@@ -24,11 +35,16 @@ async function main() {
 
   const demoUser = await prisma.user.upsert({
     where: { email: 'demo@promptstudio.dev' },
-    update: {},
+    update: {
+      passwordHash: demoPasswordHash,
+      emailVerified: new Date(),
+    },
     create: {
       email: 'demo@promptstudio.dev',
       name: 'Demo User',
       role: UserRole.USER,
+      passwordHash: demoPasswordHash,
+      emailVerified: new Date(),
     },
   });
 
