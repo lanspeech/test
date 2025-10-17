@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { Baloo_2, Fira_Code, Plus_Jakarta_Sans } from 'next/font/google';
+import Providers from '@/app/providers';
+import SiteHeader from '@/components/site-header';
+import { getCurrentSession } from '@/lib/auth/session';
 import './globals.css';
 
 const sans = Plus_Jakarta_Sans({
@@ -27,25 +30,30 @@ export const metadata: Metadata = {
   description: 'Craft expressive AI prompt experiences with confidence and color.',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const session = await getCurrentSession();
+
   return (
     <html lang="en">
       <body
         className={`${sans.variable} ${display.variable} ${mono.variable} min-h-screen bg-brand-canvas text-brand-ink`}
       >
-        <div className="relative min-h-screen overflow-hidden">
-          <div
-            className="pointer-events-none absolute inset-0 bg-brand-gradient opacity-80"
-            aria-hidden="true"
-          />
-          <main className="relative flex min-h-screen flex-col items-center justify-center px-6 py-16">
-            {children}
-          </main>
-        </div>
+        <Providers session={session}>
+          <div className="relative min-h-screen overflow-hidden">
+            <div
+              className="pointer-events-none absolute inset-0 bg-brand-gradient opacity-80"
+              aria-hidden="true"
+            />
+            <div className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-10 sm:px-6 lg:px-10">
+              <SiteHeader session={session} />
+              <main className="mt-12 flex-1">{children}</main>
+            </div>
+          </div>
+        </Providers>
       </body>
     </html>
   );
